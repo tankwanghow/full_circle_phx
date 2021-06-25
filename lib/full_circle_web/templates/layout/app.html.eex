@@ -4,28 +4,37 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FullCircle · Phoenix Framework</title>
+    <title>FullCircle</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+  <body class="<%= if @current_user, do: "", else: "body-pt-4" %>">
+    <div id="globalNavBar">
+      <nav class="navbar is-black px-5" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item brand-text is-size-4-desktop" href="/">
+            <%= if @current_user do %>
+              Kim Poh Sitt Tat Feedmill Sdn. Bhd.
+            <% else %>
+              FullCircle
             <% end %>
-          </ul>
+          </a>
+          <div class="navbar-burger burger" data-target="navUserMenu"><span></span><span></span><span></span></div>
+        </div>
+        <div id="navUserMenu" class="navbar-menu navbar-end">
           <%= render "_user_menu.html", assigns %>
+        </div>
+      </nav>
+      <%= if @current_user do %>
+        <nav class="navbar is-light px-5" role="navigation" aria-label="main navigation">
+          <div class="navbar-burger burger" data-target="navAppMenu"><span></span><span></span><span></span></div>
+          <div id="navAppMenu" class="navbar-menu">
+            <%= render "_app_menu.html" %>
+          </div>
         </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <main role="main" class="container">
+      <% end %>
+    </div>
+    <main role="main" class="container is-fluid">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
