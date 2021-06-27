@@ -35,8 +35,10 @@
       <% end %>
     </div>
     <main role="main" class="container is-fluid">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= flash_notification(@conn, :info) %>
+      <%= flash_notification(@conn, :error) %>
+      <%= flash_notification(@conn, :warning) %>
+      <%= flash_notification(@conn, :success) %>
       <%= @inner_content %>
     </main>
   </body>
