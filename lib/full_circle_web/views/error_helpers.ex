@@ -8,13 +8,32 @@ defmodule FullCircleWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
-  def error_tag(form, field) do
+  def error_tag(form, field, class \\ "invalid-feedback") do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error),
-        class: "invalid-feedback",
+        class: class,
         phx_feedback_for: input_name(form, field)
       )
     end)
+  end
+
+  def input_error_css_class(form, field) do
+    if Enum.count(Keyword.get_values(form.errors, field)) > 0 do
+      "is-danger"
+    else
+      ""
+    end
+  end
+
+  def flash_notification(conn, key) do
+    if Phoenix.Controller.get_flash(conn, key) do
+      content_tag(:div, class: "notification is-#{Atom.to_string(key)} has-text-centered", role: "alert") do
+        [content_tag(:button, nil, class: "delete"),
+        Phoenix.Controller.get_flash(conn, key)]
+      end
+    else
+      ""
+    end
   end
 
   @doc """
